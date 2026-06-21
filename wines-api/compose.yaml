@@ -1,0 +1,14 @@
+services:
+  tuvino:
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8000:8000'
+    env_file:
+      - .env
+    deploy:
+      resources:
+        reservations:
+          memory: 256M
