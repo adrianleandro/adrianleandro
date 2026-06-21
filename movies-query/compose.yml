@@ -1,0 +1,1297 @@
+name: tp
+networks:
+  tp_net:
+    ipam:
+      config:
+      - subnet: 172.25.125.0/24
+      driver: default
+services:
+  average_ratio_0:
+    container_name: average_ratio_0
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ASCENDING: 0
+      ID: 0
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: average_ratio
+      KEYINDEX: 5
+      KIND: 2
+      MINMAX: 0
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: resultq5
+      TOP: 0
+      VALUEINDEX: 4
+    image: counter:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  average_ratio_1:
+    container_name: average_ratio_1
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ASCENDING: 0
+      ID: 1
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: average_ratio
+      KEYINDEX: 5
+      KIND: 2
+      MINMAX: 0
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: resultq5
+      TOP: 0
+      VALUEINDEX: 4
+    image: counter:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  client_0:
+    container_name: client_0
+    depends_on:
+    - gateway_0
+    - gateway_1
+    environment:
+      ID: 0
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: gateway
+      RESULTS_AMOUNT: 5
+    image: client:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./data:/app/data
+  client_1:
+    container_name: client_1
+    depends_on:
+    - gateway_0
+    - gateway_1
+    environment:
+      ID: 1
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: gateway
+      RESULTS_AMOUNT: 5
+    image: client:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./data:/app/data
+  client_2:
+    container_name: client_2
+    depends_on:
+    - gateway_0
+    - gateway_1
+    environment:
+      ID: 2
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: gateway
+      RESULTS_AMOUNT: 5
+    image: client:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./data:/app/data
+  containscountry_ar_0:
+    container_name: containscountry_ar_0
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      COUNTRY: Argentina
+      ID: 0
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: containscountry_ar
+      INDEX: 3
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: filter_by_year_after_2000
+    image: containscountry:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  containscountry_ar_1:
+    container_name: containscountry_ar_1
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      COUNTRY: Argentina
+      ID: 1
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: containscountry_ar
+      INDEX: 3
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: filter_by_year_after_2000
+    image: containscountry:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  containscountry_es_0:
+    container_name: containscountry_es_0
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      COUNTRY: Spain
+      ID: 0
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: containscountry_es
+      INDEX: 3
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: resultq1
+    image: containscountry:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  containscountry_es_1:
+    container_name: containscountry_es_1
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      COUNTRY: Spain
+      ID: 1
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: containscountry_es
+      INDEX: 3
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: resultq1
+    image: containscountry:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  creditdispatcher_0:
+    container_name: creditdispatcher_0
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 0
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: creditdispatcher
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: moviecreditsharder
+      PREFIX: creditsplitted
+    image: userdispatcher:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  creditdispatcher_1:
+    container_name: creditdispatcher_1
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 1
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: creditdispatcher
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: moviecreditsharder
+      PREFIX: creditsplitted
+    image: userdispatcher:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  credits_unwinder_0:
+    container_name: credits_unwinder_0
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      CAST_INDEX: 0
+      ID: 0
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: credits_unwinder
+      MOVIE_INDEX: 2
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: creditsplitter
+    image: unwindcredits:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  credits_unwinder_1:
+    container_name: credits_unwinder_1
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      CAST_INDEX: 0
+      ID: 1
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: credits_unwinder
+      MOVIE_INDEX: 2
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: creditsplitter
+    image: unwindcredits:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  creditsplitter_0:
+    container_name: creditsplitter_0
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 0
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: creditsplitter
+      PREFIX: creditsplitted
+    image: usersplitter:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  creditsplitter_1:
+    container_name: creditsplitter_1
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 1
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: creditsplitter
+      PREFIX: creditsplitted
+    image: usersplitter:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  filter_by_year_after_2000_0:
+    container_name: filter_by_year_after_2000_0
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      COMPARATOR: GREATER
+      ID: 0
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: filter_by_year_after_2000
+      INDEX: 4
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: yearselector
+      VALUE: '1999-12-31'
+    image: year:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  filter_by_year_after_2000_1:
+    container_name: filter_by_year_after_2000_1
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      COMPARATOR: GREATER
+      ID: 1
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: filter_by_year_after_2000
+      INDEX: 4
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: yearselector
+      VALUE: '1999-12-31'
+    image: year:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  filter_by_year_before_2010_0:
+    container_name: filter_by_year_before_2010_0
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      COMPARATOR: LESSER
+      ID: 0
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: filter_by_year_before_2010
+      INDEX: 4
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: containscountry_es
+      VALUE: '2011-01-01'
+    image: year:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  filter_by_year_before_2010_1:
+    container_name: filter_by_year_before_2010_1
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      COMPARATOR: LESSER
+      ID: 1
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: filter_by_year_before_2010
+      INDEX: 4
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: containscountry_es
+      VALUE: '2011-01-01'
+    image: year:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  gateway_0:
+    container_name: gateway_0
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      CREDITS_AMOUNT: 2
+      CREDITS_DOMAIN: credits_unwinder
+      ID: 0
+      INBOX_DOMAIN: gateway
+      MOVIES_AMOUNT: 2
+      MOVIES_DOMAIN: moviesselector
+      RATINGS_AMOUNT: 2
+      RATINGS_DOMAIN: ratingselector
+      RESULTS_AMOUNT: 5
+    image: gateway:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  gateway_1:
+    container_name: gateway_1
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      CREDITS_AMOUNT: 2
+      CREDITS_DOMAIN: credits_unwinder
+      ID: 1
+      INBOX_DOMAIN: gateway
+      MOVIES_AMOUNT: 2
+      MOVIES_DOMAIN: moviesselector
+      RATINGS_AMOUNT: 2
+      RATINGS_DOMAIN: ratingselector
+      RESULTS_AMOUNT: 5
+    image: gateway:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  health_0:
+    container_name: health_checker_0
+    environment:
+    - ID=0
+    image: health:latest
+    networks:
+    - tp_net
+    volumes: /var/run/docker.sock:/var/run/docker.sock
+  health_1:
+    container_name: health_checker_1
+    environment:
+    - ID=1
+    image: health:latest
+    networks:
+    - tp_net
+    volumes: /var/run/docker.sock:/var/run/docker.sock
+  health_2:
+    container_name: health_checker_2
+    environment:
+    - ID=2
+    image: health:latest
+    networks:
+    - tp_net
+    volumes: /var/run/docker.sock:/var/run/docker.sock
+  health_3:
+    container_name: health_checker_3
+    environment:
+    - ID=3
+    image: health:latest
+    networks:
+    - tp_net
+    volumes: /var/run/docker.sock:/var/run/docker.sock
+  health_4:
+    container_name: health_checker_4
+    environment:
+    - ID=4
+    image: health:latest
+    networks:
+    - tp_net
+    volumes: /var/run/docker.sock:/var/run/docker.sock
+  mom:
+    build:
+      context: ./deployment/rabbitmq/
+      dockerfile: Dockerfile
+    container_name: mom
+    healthcheck:
+      interval: 5s
+      retries: 5
+      test: rabbitmq-diagnostics check_port_connectivity
+      timeout: 20s
+    networks:
+    - tp_net
+    ports:
+    - 15672:15672
+  moviecreditjoiner_0:
+    container_name: moviecreditjoiner_0
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      DISPATCHER_AMOUNT: 2
+      DISPATCHER_DOMAIN: creditdispatcher
+      ID: 0
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: moviecreditjoiner
+      LEFT_INDEX: 0
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: top_appearances
+      RIGHT_INDEX: 0
+    image: joiner:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  moviecreditjoiner_1:
+    container_name: moviecreditjoiner_1
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      DISPATCHER_AMOUNT: 2
+      DISPATCHER_DOMAIN: creditdispatcher
+      ID: 1
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: moviecreditjoiner
+      LEFT_INDEX: 0
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: top_appearances
+      RIGHT_INDEX: 0
+    image: joiner:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  moviecreditsharder_0:
+    container_name: moviecreditsharder_0
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 0
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: moviecreditsharder
+      INDEX: 0
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: moviecreditjoiner
+    image: sharder:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  moviecreditsharder_1:
+    container_name: moviecreditsharder_1
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 1
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: moviecreditsharder
+      INDEX: 0
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: moviecreditjoiner
+    image: sharder:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  movieratingjoiner_0:
+    container_name: movieratingjoiner_0
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      DISPATCHER_AMOUNT: 2
+      DISPATCHER_DOMAIN: ratingdispatcher
+      ID: 0
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: movieratingjoiner
+      LEFT_INDEX: 0
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: top_rating
+      RIGHT_INDEX: 0
+    image: joiner:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  movieratingjoiner_1:
+    container_name: movieratingjoiner_1
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      DISPATCHER_AMOUNT: 2
+      DISPATCHER_DOMAIN: ratingdispatcher
+      ID: 1
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: movieratingjoiner
+      LEFT_INDEX: 0
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: top_rating
+      RIGHT_INDEX: 0
+    image: joiner:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  movieratingsharder_0:
+    container_name: movieratingsharder_0
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 0
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: movieratingsharder
+      INDEX: 0
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: movieratingjoiner
+    image: sharder:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  movieratingsharder_1:
+    container_name: movieratingsharder_1
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 1
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: movieratingsharder
+      INDEX: 0
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: movieratingjoiner
+    image: sharder:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  moviesselector_0:
+    container_name: moviesselector_0
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 0
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: moviesselector
+      OUTBOXES_AMOUNT: 3
+      OUTBOX_0_AMOUNT: 2
+      OUTBOX_0_DOMAIN: containscountry_ar
+      OUTBOX_0_INDEXES: '[5, 20, 3, 13, 14]'
+      OUTBOX_1_AMOUNT: 2
+      OUTBOX_1_DOMAIN: onlyoneprodcountry
+      OUTBOX_1_INDEXES: '[5, 13, 2]'
+      OUTBOX_2_AMOUNT: 2
+      OUTBOX_2_DOMAIN: rentability
+      OUTBOX_2_INDEXES: '[5, 15, 2, 9]'
+    image: selector:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  moviesselector_1:
+    container_name: moviesselector_1
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 1
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: moviesselector
+      OUTBOXES_AMOUNT: 3
+      OUTBOX_0_AMOUNT: 2
+      OUTBOX_0_DOMAIN: containscountry_ar
+      OUTBOX_0_INDEXES: '[5, 20, 3, 13, 14]'
+      OUTBOX_1_AMOUNT: 2
+      OUTBOX_1_DOMAIN: onlyoneprodcountry
+      OUTBOX_1_INDEXES: '[5, 13, 2]'
+      OUTBOX_2_AMOUNT: 2
+      OUTBOX_2_DOMAIN: rentability
+      OUTBOX_2_INDEXES: '[5, 15, 2, 9]'
+    image: selector:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  onlyoneprodcountry_0:
+    container_name: onlyoneprodcountry_0
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 0
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: onlyoneprodcountry
+      INDEX: 1
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: top_ranking
+    image: onlyoneprodcountry:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  onlyoneprodcountry_1:
+    container_name: onlyoneprodcountry_1
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 1
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: onlyoneprodcountry
+      INDEX: 1
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: top_ranking
+    image: onlyoneprodcountry:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  ratingdispatcher_0:
+    container_name: ratingdispatcher_0
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 0
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: ratingdispatcher
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: movieratingsharder
+      PREFIX: ratingsplitted
+    image: userdispatcher:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  ratingdispatcher_1:
+    container_name: ratingdispatcher_1
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 1
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: ratingdispatcher
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: movieratingsharder
+      PREFIX: ratingsplitted
+    image: userdispatcher:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  ratingselector_0:
+    container_name: ratingselector_0
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 0
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: ratingselector
+      OUTBOXES_AMOUNT: 1
+      OUTBOX_0_AMOUNT: 2
+      OUTBOX_0_DOMAIN: ratingsplitter
+      OUTBOX_0_INDEXES: '[1, 2]'
+    image: selector:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  ratingselector_1:
+    container_name: ratingselector_1
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 1
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: ratingselector
+      OUTBOXES_AMOUNT: 1
+      OUTBOX_0_AMOUNT: 2
+      OUTBOX_0_DOMAIN: ratingsplitter
+      OUTBOX_0_INDEXES: '[1, 2]'
+    image: selector:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  ratingsplitter_0:
+    container_name: ratingsplitter_0
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 0
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: ratingsplitter
+      PREFIX: ratingsplitted
+    image: usersplitter:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  ratingsplitter_1:
+    container_name: ratingsplitter_1
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 1
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: ratingsplitter
+      PREFIX: ratingsplitted
+    image: usersplitter:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  rentability_0:
+    container_name: rentability_0
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      BUDGET_INDEX: 2
+      ID: 0
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: rentability
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: sentiment
+      REVENUE_INDEX: 1
+    image: rentability:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  rentability_1:
+    container_name: rentability_1
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      BUDGET_INDEX: 2
+      ID: 1
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: rentability
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: sentiment
+      REVENUE_INDEX: 1
+    image: rentability:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  resultq1_0:
+    container_name: resultq1_0
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 0
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: resultq1
+      QUERY: 1
+    image: result:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  resultq1_1:
+    container_name: resultq1_1
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 1
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: resultq1
+      QUERY: 1
+    image: result:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  resultq2_0:
+    container_name: resultq2_0
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 0
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: resultq2
+      QUERY: 2
+    image: result:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  resultq2_1:
+    container_name: resultq2_1
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 1
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: resultq2
+      QUERY: 2
+    image: result:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  resultq3_0:
+    container_name: resultq3_0
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 0
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: resultq3
+      QUERY: 3
+    image: result:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  resultq3_1:
+    container_name: resultq3_1
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 1
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: resultq3
+      QUERY: 3
+    image: result:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  resultq4_0:
+    container_name: resultq4_0
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 0
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: resultq4
+      QUERY: 4
+    image: result:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  resultq4_1:
+    container_name: resultq4_1
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 1
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: resultq4
+      QUERY: 4
+    image: result:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  resultq5_0:
+    container_name: resultq5_0
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 0
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: resultq5
+      QUERY: 5
+    image: result:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  resultq5_1:
+    container_name: resultq5_1
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 1
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: resultq5
+      QUERY: 5
+    image: result:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  sentiment_0:
+    container_name: sentiment_0
+    depends_on:
+      mom:
+        condition: service_healthy
+      sentimentanalyzer:
+        condition: service_started
+    entrypoint: ./main
+    environment:
+      ID: 0
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: sentiment
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: average_ratio
+    image: sentiment:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  sentiment_1:
+    container_name: sentiment_1
+    depends_on:
+      mom:
+        condition: service_healthy
+      sentimentanalyzer:
+        condition: service_started
+    entrypoint: ./main
+    environment:
+      ID: 1
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: sentiment
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: average_ratio
+    image: sentiment:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  sentimentanalyzer:
+    container_name: sentimentanalyzer
+    image: analyzer:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/config.ini:/app/config.ini
+  top_appearances_0:
+    container_name: top_appearances_0
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ASCENDING: 0
+      ID: 0
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: top_appearances
+      KEYINDEX: 1
+      KIND: 1
+      MINMAX: 0
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: resultq4
+      TOP: 10
+      VALUEINDEX: 2
+    image: counter:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  top_appearances_1:
+    container_name: top_appearances_1
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ASCENDING: 0
+      ID: 1
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: top_appearances
+      KEYINDEX: 1
+      KIND: 1
+      MINMAX: 0
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: resultq4
+      TOP: 10
+      VALUEINDEX: 2
+    image: counter:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  top_ranking_0:
+    container_name: top_ranking_0
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ASCENDING: 0
+      ID: 0
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: top_ranking
+      KEYINDEX: 1
+      KIND: 0
+      MINMAX: 0
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: resultq2
+      TOP: 5
+      VALUEINDEX: 2
+    image: counter:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  top_ranking_1:
+    container_name: top_ranking_1
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ASCENDING: 0
+      ID: 1
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: top_ranking
+      KEYINDEX: 1
+      KIND: 0
+      MINMAX: 0
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: resultq2
+      TOP: 5
+      VALUEINDEX: 2
+    image: counter:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  top_rating_0:
+    container_name: top_rating_0
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ASCENDING: 0
+      ID: 0
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: top_rating
+      KEYINDEX: 3
+      KIND: 2
+      MINMAX: 1
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: resultq3
+      TOP: 1
+      VALUEINDEX: 1
+    image: counter:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  top_rating_1:
+    container_name: top_rating_1
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ASCENDING: 0
+      ID: 1
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: top_rating
+      KEYINDEX: 3
+      KIND: 2
+      MINMAX: 1
+      OUTBOX_AMOUNT: 2
+      OUTBOX_DOMAIN: resultq3
+      TOP: 1
+      VALUEINDEX: 1
+    image: counter:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  yearselector_0:
+    container_name: yearselector_0
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 0
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: yearselector
+      OUTBOXES_AMOUNT: 3
+      OUTBOX_0_AMOUNT: 2
+      OUTBOX_0_DOMAIN: filter_by_year_before_2010
+      OUTBOX_0_INDEXES: '[0, 1, 2, 3, 4]'
+      OUTBOX_1_AMOUNT: 2
+      OUTBOX_1_DOMAIN: movieratingsharder
+      OUTBOX_1_INDEXES: '[0, 1]'
+      OUTBOX_2_AMOUNT: 2
+      OUTBOX_2_DOMAIN: moviecreditsharder
+      OUTBOX_2_INDEXES: '[0]'
+    image: selector:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state
+  yearselector_1:
+    container_name: yearselector_1
+    depends_on:
+      mom:
+        condition: service_healthy
+    entrypoint: ./main
+    environment:
+      ID: 1
+      INBOX_AMOUNT: 2
+      INBOX_DOMAIN: yearselector
+      OUTBOXES_AMOUNT: 3
+      OUTBOX_0_AMOUNT: 2
+      OUTBOX_0_DOMAIN: filter_by_year_before_2010
+      OUTBOX_0_INDEXES: '[0, 1, 2, 3, 4]'
+      OUTBOX_1_AMOUNT: 2
+      OUTBOX_1_DOMAIN: movieratingsharder
+      OUTBOX_1_INDEXES: '[0, 1]'
+      OUTBOX_2_AMOUNT: 2
+      OUTBOX_2_DOMAIN: moviecreditsharder
+      OUTBOX_2_INDEXES: '[0]'
+    image: selector:latest
+    networks:
+    - tp_net
+    volumes:
+    - ./configs/configs.yml:/app/configs/configs.yml
+    - ./state:/app/state

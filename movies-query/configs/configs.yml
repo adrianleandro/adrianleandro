@@ -1,0 +1,16 @@
+client:
+  credits: data/credits.csv
+  movies: data/movies_metadata.csv
+  ratings: data/ratings.csv-sample
+  batchSize: 1000
+gateway:
+  domain: gateway
+  port: 3000
+  maxRequestHandlers: 10
+log:
+  level: DEBUG
+mom:
+  url: amqp://guest:guest@mom:5672/
+analyzer:
+  address: sentimentanalyzer:12345
+messageDuplication: 1
